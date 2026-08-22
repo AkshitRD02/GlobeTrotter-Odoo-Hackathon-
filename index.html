@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlobeTrotter – Empowering Personalized Travel Planning</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==================== AUTH CONTAINER ==================== -->
+  <div id="auth-container" class="auth-wrapper active">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="logo">
+          <span class="logo-text">Globe<span>Trotter</span></span>
+        </div>
+        <p class="auth-tagline">Empowering Personalized Travel Planning</p>
+        <div id="backend-status" class="backend-status-badge offline">
+          <span class="status-dot"></span>
+          <span class="status-text">Backend Offline</span>
+        </div>
+      </div>
+
+      <!-- Login Screen -->
+      <form id="login-form" class="auth-form active">
+        <h2>Welcome Back</h2>
+        <p class="form-sub">Login to manage your personalized travel plans</p>
+        
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="mail"></i>
+            <input type="text" id="login-email" placeholder="you@example.com or 'admin'" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="lock"></i>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a href="#" class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+
+        <p class="auth-switch">Don't have an account? <a href="#" id="to-signup">Create account</a></p>
+      </form>
+
+      <!-- Signup Screen -->
+      <form id="signup-form" class="auth-form">
+        <h2>Create Account</h2>
+        <p class="form-sub">Start planning your dream multi-city journeys today</p>
+
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="user"></i>
+            <input type="text" id="signup-name" placeholder="John Doe" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="mail"></i>
+            <input type="email" id="signup-email" placeholder="you@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <div class="input-icon-wrapper">
+            <i data-lucide="lock"></i>
+            <input type="password" id="signup-password" placeholder="Min. 8 characters" minlength="8" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Profile Picture</label>
+          <div class="avatar-selection-grid">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="signup-avatar-option selected" data-avatar="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" class="signup-avatar-option" data-avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" class="signup-avatar-option" data-avatar="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" class="signup-avatar-option" data-avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" class="signup-avatar-option" data-avatar="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80">
+            <label class="avatar-upload-label" for="signup-avatar-file">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+              <span>Upload</span>
+            </label>
+            <input type="file" id="signup-avatar-file" accept="image/*" class="hidden">
+          </div>
+          <input type="hidden" id="signup-avatar-url" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+
+        <p class="auth-switch">Already have an account? <a href="#" id="to-login">Sign In</a></p>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==================== MAIN APP CONTAINER ==================== -->
+  <div id="app-container" class="app-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">
+          <span class="logo-text">Globe<span>Trotter</span></span>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#dashboard" class="menu-item active" data-screen="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#my-trips" class="menu-item" data-screen="my-trips">
+          <i data-lucide="briefcase"></i>
+          <span>My Trips</span>
+        </a>
+        <a href="#search" class="menu-item" data-screen="search">
+          <i data-lucide="search"></i>
+          <span>Search Destinations</span>
+        </a>
+        <a href="#calendar" class="menu-item" data-screen="calendar">
+          <i data-lucide="calendar"></i>
+          <span>Calendar</span>
+        </a>
+        <a href="#community" class="menu-item" data-screen="community">
+          <i data-lucide="users"></i>
+          <span>Community</span>
+        </a>
+        <a href="#profile" class="menu-item" data-screen="profile">
+          <i data-lucide="user-cog"></i>
+          <span>Profile</span>
+        </a>
+        <a href="#admin" class="menu-item" data-screen="admin">
+          <i data-lucide="shield-check"></i>
+          <span>Admin Panel</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-user">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar" id="user-avatar-sidebar" class="user-avatar">
+        <div class="user-info">
+          <span class="user-name" id="user-name-sidebar">Guest User</span>
+          <span class="user-email" id="user-email-sidebar">guest@globetrotter.com</span>
+        </div>
+        <button id="logout-btn" title="Log Out">
+          <i data-lucide="log-out"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Shell -->
+    <main class="main-content">
+      
+      <!-- Top Mobile Navbar Header -->
+      <header class="mobile-header">
+        <div class="logo">
+          <span class="logo-text">G<span>T</span></span>
+        </div>
+        <div class="mobile-nav-toggle" id="mobile-toggle">
+          <i data-lucide="menu"></i>
+        </div>
+      </header>
+
+      <!-- Dynamic Screens -->
+      
+      <!-- 1. DASHBOARD / HOME (Screen 3) -->
+      <section id="screen-dashboard" class="app-screen active">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h1>Hello, <span class="user-greet-name">Traveler</span>! 👋</h1>
+            <p>Where is your next adventure taking you?</p>
+          </div>
+          <button class="btn btn-primary" onclick="app.navigateTo('create-trip')">
+            <i data-lucide="plus"></i> Plan New Trip
+          </button>
+        </div>
+
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <div class="stat-icon purple"><i data-lucide="plane"></i></div>
+            <div class="stat-info">
+              <h3>Planned Trips</h3>
+              <p id="stat-total-trips">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal"><i data-lucide="map-pin"></i></div>
+            <div class="stat-info">
+              <h3>Destinations Visited</h3>
+              <p id="stat-total-destinations">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i data-lucide="dollar-sign"></i></div>
+            <div class="stat-info">
+              <h3>Total Est. Budget</h3>
+              <p id="stat-total-budget">$0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-layout">
+          <!-- Recent Trips List -->
+          <div class="dashboard-main">
+            <div class="section-header">
+              <h2>My Recent Trips</h2>
+              <a href="#my-trips" onclick="app.navigateTo('my-trips')">View all</a>
+            </div>
+            <div class="trips-grid-mini" id="recent-trips-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Featured destinations -->
+          <div class="dashboard-sidebar">
+            <div class="section-header">
+              <h2>Trending Destinations</h2>
+            </div>
+            <div class="trending-list" id="trending-cities">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. MY TRIPS / USER LISTING (Screen 6) -->
+      <section id="screen-my-trips" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>My Planned Trips</h1>
+            <p>Manage and organize all your upcoming and past travels</p>
+          </div>
+          <button class="btn btn-primary" onclick="app.navigateTo('create-trip')">
+            <i data-lucide="plus"></i> Plan New Trip
+          </button>
+        </div>
+
+        <div class="trips-filters">
+          <div class="search-input-group">
+            <i data-lucide="search"></i>
+            <input type="text" id="trips-search-input" placeholder="Search trips by name or location...">
+          </div>
+        </div>
+
+        <div class="trips-grid" id="full-trips-list">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+
+      <!-- 3. CREATE TRIP (Screen 4) -->
+      <section id="screen-create-trip" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>Plan a New Adventure</h1>
+            <p>Enter details to start planning your multi-city travel itinerary</p>
+          </div>
+          <button class="btn btn-secondary" onclick="app.navigateTo('dashboard')">
+            Cancel
+          </button>
+        </div>
+
+        <div class="form-container-card">
+          <form id="trip-create-form" class="trip-editor-form">
+            <div class="form-row">
+              <div class="form-group flex-2">
+                <label for="trip-name">Trip Name <span class="required">*</span></label>
+                <input type="text" id="trip-name" placeholder="e.g. Summer Euro Expedition 2026" required>
+              </div>
+              <div class="form-group flex-1">
+                <label for="trip-budget-limit">Total Budget Limit ($) <span class="required">*</span></label>
+                <input type="number" id="trip-budget-limit" placeholder="e.g. 5000" min="0" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="trip-start-date">Start Date <span class="required">*</span></label>
+                <input type="date" id="trip-start-date" required>
+              </div>
+              <div class="form-group">
+                <label for="trip-end-date">End Date <span class="required">*</span></label>
+                <input type="date" id="trip-end-date" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="trip-description">Trip Description</label>
+              <textarea id="trip-description" rows="4" placeholder="Briefly describe the theme or goals of your trip..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Choose a Preset Cover Image</label>
+              <div class="cover-presets" id="cover-presets-grid">
+                <!-- Javascript will load image choices -->
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <i data-lucide="save"></i> Save and Continue
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- 4. ITINERARY BUILDER (Screen 5) -->
+      <section id="screen-itinerary-builder" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1 id="builder-trip-name">Build Itinerary</h1>
+            <p id="builder-trip-dates">Trip Dates: - to -</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-secondary" id="btn-view-itinerary">
+              <i data-lucide="eye"></i> View Itinerary
+            </button>
+            <button class="btn btn-primary" onclick="app.navigateTo('my-trips')">
+              <i data-lucide="check"></i> Done Editing
+            </button>
+          </div>
+        </div>
+
+        <div class="builder-layout">
+          <!-- Stops / City order list -->
+          <div class="builder-stops-column">
+            <div class="panel-header">
+              <h2>Travel Stops</h2>
+              <button class="btn btn-secondary btn-sm" id="btn-add-stop">
+                <i data-lucide="plus"></i> Add Stop
+              </button>
+            </div>
+
+            <div class="stops-list" id="builder-stops-list">
+              <!-- Dynamic list of added stops -->
+            </div>
+          </div>
+
+          <!-- Activities inside the selected stop -->
+          <div class="builder-activities-column">
+            <div class="panel-header">
+              <h2>Activities for <span id="builder-active-stop-name" class="highlight-text">No Stop Selected</span></h2>
+              <button class="btn btn-primary btn-sm" id="btn-add-activity" disabled>
+                <i data-lucide="plus"></i> Add Activity
+              </button>
+            </div>
+            
+            <div id="no-stop-placeholder" class="placeholder-box">
+              <i data-lucide="map-pin"></i>
+              <p>Select or add a travel stop to build its daily activities timeline.</p>
+            </div>
+
+            <div class="activities-list hidden" id="builder-activities-list">
+              <!-- Dynamically populated activities -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. ITINERARY VIEW & BUDGET SECTION (Screen 9) -->
+      <section id="screen-itinerary-view" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1 id="view-trip-name">Trip Details</h1>
+            <p id="view-trip-dates">August 10 - August 25</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-secondary" id="btn-edit-trip-itinerary">
+              <i data-lucide="edit"></i> Edit Itinerary
+            </button>
+            <button class="btn btn-secondary" id="btn-share-trip-link">
+              <i data-lucide="share-2"></i> Share Trip
+            </button>
+            <button class="btn btn-primary" onclick="app.navigateTo('my-trips')">
+              <i data-lucide="arrow-left"></i> Back to Trips
+            </button>
+          </div>
+        </div>
+
+        <div class="itinerary-view-layout">
+          <!-- Left side: Timeline / Calendar View Mode Toggle -->
+          <div class="itinerary-main-view">
+            <div class="view-mode-bar">
+              <div class="toggle-group">
+                <button class="toggle-btn active" id="btn-view-timeline">Timeline View</button>
+                <button class="toggle-btn" id="btn-view-summary">Stop Overview</button>
+              </div>
+            </div>
+
+            <div class="timeline-container" id="trip-timeline-content">
+              <!-- Generated timeline of activities -->
+            </div>
+          </div>
+
+          <!-- Right side: Budget & Cost Breakdown Section -->
+          <div class="itinerary-budget-sidebar">
+            <div class="budget-summary-card">
+              <h3>Trip Budget Analysis</h3>
+              <div class="total-budget-indicator">
+                <div class="value-group">
+                  <span class="label">Total Est. Cost</span>
+                  <span class="amount" id="budget-total-cost">$0</span>
+                </div>
+                <div class="value-group align-right">
+                  <span class="label">Limit Budget</span>
+                  <span class="amount" id="budget-limit-value">$0</span>
+                </div>
+              </div>
+
+              <!-- Overbudget alert banner -->
+              <div class="alert alert-danger hidden" id="overbudget-alert">
+                <i data-lucide="alert-triangle"></i>
+                <div>
+                  <strong>Budget Exceeded!</strong> You are over budget by <span id="overbudget-amount">$0</span>.
+                </div>
+              </div>
+
+              <div class="budget-bar-wrapper">
+                <div class="budget-bar-fill" id="budget-progress-bar" style="width: 0%"></div>
+              </div>
+
+              <div class="cost-categories-breakdown">
+                <h4>Category Breakdown</h4>
+                
+                <div class="category-row">
+                  <span class="cat-label"><span class="bullet transport"></span> Transport</span>
+                  <span class="cat-amount" id="breakdown-transport">$0</span>
+                </div>
+                <div class="category-row">
+                  <span class="cat-label"><span class="bullet lodging"></span> Stay / Lodging</span>
+                  <span class="cat-amount" id="breakdown-lodging">$0</span>
+                </div>
+                <div class="category-row">
+                  <span class="cat-label"><span class="bullet activities"></span> Activities</span>
+                  <span class="cat-amount" id="breakdown-activities">$0</span>
+                </div>
+                <div class="category-row">
+                  <span class="cat-label"><span class="bullet meals"></span> Meals</span>
+                  <span class="cat-amount" id="breakdown-meals">$0</span>
+                </div>
+              </div>
+
+              <div class="budget-visual-chart">
+                <!-- A pure CSS flex/grid visual representation of a chart -->
+                <div class="custom-donut-chart" id="budget-donut-chart">
+                  <div class="donut-center">
+                    <span id="donut-center-pct">0%</span>
+                    <small>Used</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. CITY & ACTIVITY SEARCH (Screen 8) -->
+      <section id="screen-search" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>Discover Destinations</h1>
+            <p>Explore cities, cost indexes, sightseeing and popular activities globally</p>
+          </div>
+        </div>
+
+        <div class="search-controls-card">
+          <div class="search-main-row">
+            <div class="search-input-group flex-3">
+              <i data-lucide="search"></i>
+              <input type="text" id="search-destinations-input" placeholder="Search cities, countries, landmarks...">
+            </div>
+            <div class="form-group flex-1">
+              <select id="search-filter-region">
+                <option value="">All Regions</option>
+                <option value="Europe">Europe</option>
+                <option value="Asia">Asia</option>
+                <option value="North America">North America</option>
+                <option value="South America">South America</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <select id="search-filter-cost">
+                <option value="">Any Budget</option>
+                <option value="$">Low ($)</option>
+                <option value="$$">Medium ($$)</option>
+                <option value="$$$">High ($$$)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-tabs">
+          <button class="search-tab-btn active" id="tab-btn-cities">Destinations / Cities</button>
+          <button class="search-tab-btn" id="tab-btn-activities">Activities</button>
+        </div>
+
+        <div class="search-results-grid" id="search-results-container">
+          <!-- Populated dynamically with gorgeous card layouts -->
+        </div>
+      </section>
+
+      <!-- 7. CALENDAR VIEW SCREEN (Screen 11) -->
+      <section id="screen-calendar" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>Interactive Trips Calendar</h1>
+            <p>Visualize the timeline and schedule overlap of all your planned trips</p>
+          </div>
+        </div>
+
+        <div class="calendar-layout-card">
+          <div class="calendar-header-toolbar">
+            <button class="btn btn-secondary btn-sm" id="calendar-prev-month"><i data-lucide="chevron-left"></i></button>
+            <h2 id="calendar-month-year">August 2026</h2>
+            <button class="btn btn-secondary btn-sm" id="calendar-next-month"><i data-lucide="chevron-right"></i></button>
+          </div>
+
+          <div class="calendar-grid-header">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+          </div>
+          <div class="calendar-days-grid" id="calendar-days-container">
+            <!-- Dynamically rendered calendar days with active trip indicator bars -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. COMMUNITY TAB SCREEN (Screen 10) -->
+      <section id="screen-community" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>Community Explorations</h1>
+            <p>Browse shared public travel plans and copy high-rated itineraries to your trips</p>
+          </div>
+        </div>
+
+        <div class="community-grid" id="community-itineraries-container">
+          <!-- Dynamically populated shared itineraries -->
+        </div>
+      </section>
+
+      <!-- 9. SHARED / PUBLIC VIEW SCREEN (Screen 11 - Read Only variant) -->
+      <section id="screen-shared-view" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <span class="badge badge-success"><i data-lucide="globe"></i> Public Shared Link</span>
+            <h1 id="shared-trip-name">Summer Paris-London Escapade</h1>
+            <p id="shared-trip-creator">Created by: globetrotter_enthusiast</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="btn-copy-shared-trip">
+              <i data-lucide="copy"></i> Copy Trip to My Plan
+            </button>
+            <button class="btn btn-secondary" onclick="app.navigateTo('community')">
+              Back to Community
+            </button>
+          </div>
+        </div>
+
+        <div class="shared-view-grid">
+          <!-- Left side: Timeline view of stops -->
+          <div class="shared-timeline-pane">
+            <div class="timeline-container" id="shared-timeline-content">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          
+          <!-- Right side: Stats & Info -->
+          <div class="shared-info-pane">
+            <div class="stat-card budget-summary-card">
+              <h3>Trip Budget & Duration</h3>
+              <div class="stat-mini-row">
+                <span class="label">Total Est. Cost:</span>
+                <span class="amount" id="shared-total-cost">$3,400</span>
+              </div>
+              <div class="stat-mini-row">
+                <span class="label">Days duration:</span>
+                <span class="amount" id="shared-total-duration">12 Days</span>
+              </div>
+              <div class="stat-mini-row">
+                <span class="label">Destinations:</span>
+                <span class="amount" id="shared-total-stops">3 Cities</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. USER PROFILE & SETTINGS (Screen 7) -->
+      <section id="screen-profile" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>User Profile & Settings</h1>
+            <p>Manage your account info, preferences, and saved locations</p>
+          </div>
+        </div>
+
+        <div class="profile-layout">
+          <!-- Edit Form -->
+          <div class="profile-main-card">
+            <form id="profile-settings-form">
+              <div class="profile-avatar-row">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Profile Avatar" id="profile-avatar-preview">
+                <div class="avatar-info">
+                  <label for="profile-avatar-input" class="btn btn-secondary btn-sm">Change Photo</label>
+                  <input type="file" id="profile-avatar-input" accept="image/*" class="hidden">
+                  <p class="input-sub">JPG, PNG allowed. Max size 2MB</p>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="profile-name">Full Name</label>
+                  <input type="text" id="profile-name" value="Jane Doe" required>
+                </div>
+                <div class="form-group">
+                  <label for="profile-email">Email Address</label>
+                  <input type="email" id="profile-email" value="jane.doe@example.com" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="profile-language">Preferred Language</label>
+                  <select id="profile-language">
+                    <option value="en">English (US)</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="profile-currency">Preferred Currency</label>
+                  <select id="profile-currency">
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="profile-btn-group">
+                <button type="submit" class="btn btn-primary">Save Profile Settings</button>
+                <button type="button" class="btn btn-danger-outline" id="btn-delete-account">Delete Account</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Saved Places Summary -->
+          <div class="profile-sidebar-card">
+            <h3>My Saved Destinations</h3>
+            <div class="saved-destinations-list" id="saved-destinations-container">
+              <!-- Dynamically populated saved locations -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. ADMIN DASHBOARD SCREEN (Screen 12) -->
+      <section id="screen-admin" class="app-screen">
+        <div class="screen-header">
+          <div>
+            <h1>Admin Panel & Analytics</h1>
+            <p>Track metrics, manage registered users, check popular spots and engagement trends</p>
+          </div>
+        </div>
+
+        <div class="search-controls-card">
+          <div class="search-main-row" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+            <div class="search-input-group" style="flex-grow:1; margin-right:16px;">
+              <i data-lucide="search"></i>
+              <input type="text" id="admin-search-input" placeholder="Search users, cities, or activities...">
+            </div>
+            <div class="form-actions-row" style="display:flex; gap:10px; flex-shrink:0;">
+              <button class="btn btn-secondary btn-sm" id="btn-admin-group"><i data-lucide="layers"></i> Group By</button>
+              <button class="btn btn-secondary btn-sm" id="btn-admin-filter"><i data-lucide="filter"></i> Filter</button>
+              <button class="btn btn-secondary btn-sm" id="btn-admin-sort"><i data-lucide="arrow-up-down"></i> Sort By</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-tabs">
+          <button class="search-tab-btn active" id="admin-tab-users">Manage Users</button>
+          <button class="search-tab-btn" id="admin-tab-cities">Popular Cities</button>
+          <button class="search-tab-btn" id="admin-tab-activities">Popular Activities</button>
+          <button class="search-tab-btn" id="admin-tab-trends">User Trends & Analytics</button>
+        </div>
+
+        <!-- Dynamic Admin Sub-Panel Content -->
+        <div id="admin-content-container">
+          <!-- Dynamically populated based on active sub-tab -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODALS / DIALOGS ==================== -->
+  
+  <!-- Add Stop Modal -->
+  <div class="modal-overlay" id="modal-add-stop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add Travel Stop</h3>
+        <button class="close-btn" onclick="app.closeModal('modal-add-stop')">&times;</button>
+      </div>
+      <form id="form-modal-add-stop">
+        <div class="form-group">
+          <label for="stop-city-select">Select Destination City</label>
+          <select id="stop-city-select" required>
+            <!-- Loaded dynamically from cities database -->
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="stop-arrival-date">Arrival Date</label>
+            <input type="date" id="stop-arrival-date" required>
+          </div>
+          <div class="form-group">
+            <label for="stop-departure-date">Departure Date</label>
+            <input type="date" id="stop-departure-date" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-add-stop')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Stop</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Activity Modal -->
+  <div class="modal-overlay" id="modal-add-activity">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add Activity</h3>
+        <button class="close-btn" onclick="app.closeModal('modal-add-activity')">&times;</button>
+      </div>
+      <form id="form-modal-add-activity">
+        <div class="form-group">
+          <label for="activity-name">Activity Name <span class="required">*</span></label>
+          <input type="text" id="activity-name" placeholder="e.g. Guided tour of the Colosseum" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="activity-category">Category</label>
+            <select id="activity-category" required>
+              <option value="activities">Activity / Sightseeing</option>
+              <option value="transport">Transport</option>
+              <option value="lodging">Stay / Lodging</option>
+              <option value="meals">Meals / Dining</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="activity-cost">Estimated Cost ($) <span class="required">*</span></label>
+            <input type="number" id="activity-cost" placeholder="0" min="0" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="activity-date">Date</label>
+            <input type="date" id="activity-date" required>
+          </div>
+          <div class="form-group">
+            <label for="activity-time">Start Time</label>
+            <input type="time" id="activity-time" value="09:00">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-add-activity')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Activity</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Main Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
