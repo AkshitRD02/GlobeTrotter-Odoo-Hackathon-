@@ -357,6 +357,15 @@ app.put('/api/admin/users/:id/status', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
 });
+// ==================== FRONTEND STATIC HOSTING ====================
+
+// Automatically serve your index.html and style.css files to the browser
+app.use(express.static(__dirname));
+
+// Fallback to send index.html for any frontend web navigation routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`GlobeTrotter backend running on port ${PORT}`);
