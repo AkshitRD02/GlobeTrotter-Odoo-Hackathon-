@@ -1,0 +1,965 @@
+# GlobeTrotter-Odoo-Hackathon-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GlobeTrotter - Empowering Personalized Travel Planning</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 900: '#312e81' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- ================= TOP DEMO SCREEN NAVIGATOR (FOR HACKATHON JURY) ================= -->
+  <header class="bg-slate-900 text-white px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 shadow-md sticky top-0 z-50">
+    <div class="flex items-center gap-2 font-bold text-brand-400">
+      <i data-lucide="compass" class="w-4 h-4"></i>
+      <span>GlobeTrotter Screen Switcher</span>
+    </div>
+    <div class="flex flex-wrap gap-1">
+      <button onclick="switchScreen('screen-1')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">1. Login</button>
+      <button onclick="switchScreen('screen-2')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">2. Register</button>
+      <button onclick="switchScreen('screen-3')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">3. Landing</button>
+      <button onclick="switchScreen('screen-4')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">4. New Trip</button>
+      <button onclick="switchScreen('screen-5')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">5. Build Itinerary</button>
+      <button onclick="switchScreen('screen-6')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">6. Trip Listing</button>
+      <button onclick="switchScreen('screen-7')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">7. Profile</button>
+      <button onclick="switchScreen('screen-8')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">8. Search</button>
+      <button onclick="switchScreen('screen-9')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">9. Visual Itinerary</button>
+      <button onclick="switchScreen('screen-10')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">10. Community</button>
+      <button onclick="switchScreen('screen-11')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">11. Calendar</button>
+      <button onclick="switchScreen('screen-12')" class="px-2 py-1 bg-slate-800 hover:bg-brand-600 rounded transition">12. Admin</button>
+    </div>
+  </header>
+
+  <!-- ================= COMMON APP NAVBAR (Screens 3-12) ================= -->
+  <nav id="app-navbar" class="bg-white border-b border-slate-200 px-6 py-3.5 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="switchScreen('screen-3')">
+      <div class="bg-brand-600 text-white p-2 rounded-xl">
+        <i data-lucide="globe" class="w-6 h-6"></i>
+      </div>
+      <span class="text-2xl font-black tracking-tight text-slate-900">GlobalTrotter</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button onclick="switchScreen('screen-4')" class="hidden md:flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition">
+        <i data-lucide="plus-circle" class="w-4 h-4"></i> Plan a trip
+      </button>
+      <button onclick="switchScreen('screen-10')" class="text-slate-600 hover:text-brand-600 font-medium text-sm">Community</button>
+      <button onclick="switchScreen('screen-11')" class="text-slate-600 hover:text-brand-600 font-medium text-sm">Calendar</button>
+      <div onclick="switchScreen('screen-7')" class="w-10 h-10 rounded-full bg-brand-100 border-2 border-brand-500 flex items-center justify-center cursor-pointer text-brand-700 font-bold hover:scale-105 transition">
+        GT
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= MAIN VIEW CONTAINER ================= -->
+  <main class="flex-1">
+
+    <!-- ================= SCREEN 1: LOGIN SCREEN ================= -->
+    <section id="screen-1" class="screen-view p-6 flex items-center justify-center min-h-[85vh]">
+      <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 w-full max-w-md text-center">
+        <div class="w-24 h-24 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 mx-auto flex flex-col items-center justify-center text-slate-400 mb-6">
+          <i data-lucide="user" class="w-10 h-10"></i>
+          <span class="text-xs font-semibold mt-1">Photo</span>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-800 mb-1">Login to GlobalTrotter</h2>
+        <p class="text-sm text-slate-500 mb-6">Screen 1 - User Authentication</p>
+        <form onsubmit="event.preventDefault(); switchScreen('screen-3');" class="space-y-4 text-left">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Username</label>
+            <input type="text" placeholder="Enter username" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm" required />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
+            <input type="password" placeholder="••••••••" class="w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm" required />
+          </div>
+          <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg shadow-md transition">
+            Login Button
+          </button>
+        </form>
+        <p class="text-xs text-slate-500 mt-5">Don't have an account? <a href="#" onclick="switchScreen('screen-2')" class="text-brand-600 font-semibold underline">Register Users</a></p>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 2: REGISTRATION SCREEN ================= -->
+    <section id="screen-2" class="screen-view hidden p-6 flex items-center justify-center min-h-[85vh]">
+      <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 w-full max-w-2xl">
+        <div class="text-center mb-6">
+          <div class="w-24 h-24 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 mx-auto flex flex-col items-center justify-center text-slate-400 mb-3">
+            <i data-lucide="camera" class="w-8 h-8"></i>
+            <span class="text-xs font-semibold">Photo</span>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">Registration Screen</h2>
+          <p class="text-xs text-slate-500">Screen 2 - Create Traveler Profile</p>
+        </div>
+        <form onsubmit="event.preventDefault(); switchScreen('screen-3');" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">First Name</label>
+              <input type="text" placeholder="John" class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Last Name</label>
+              <input type="text" placeholder="Doe" class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Email Address</label>
+              <input type="email" placeholder="john@example.com" class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Phone Number</label>
+              <input type="tel" placeholder="+91 98765 43210" class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" required />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">City</label>
+              <input type="text" placeholder="Ahmedabad" class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Country</label>
+              <input type="text" placeholder="India" class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Additional Information ....</label>
+            <textarea rows="3" placeholder="Travel preferences, dietary restrictions, emergency contact details..." class="w-full px-3.5 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg shadow-md transition">
+            Register Users
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 3: MAIN LANDING PAGE ================= -->
+    <section id="screen-3" class="screen-view hidden p-6 max-w-7xl mx-auto space-y-8">
+      <!-- Banner Image -->
+      <div class="relative bg-gradient-to-r from-brand-900 via-indigo-900 to-slate-900 rounded-3xl p-10 text-white shadow-xl overflow-hidden min-h-[260px] flex flex-col justify-center">
+        <div class="relative z-10 max-w-2xl">
+          <span class="bg-brand-500/30 text-brand-200 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold">Screen 3 - Main Landing Page</span>
+          <h1 class="text-4xl md:text-5xl font-extrabold mt-3 tracking-tight">Explore The World On Your Terms</h1>
+          <p class="mt-3 text-slate-300 text-sm md:text-base">Empowering AI-driven personalized itineraries, regional discovery, and community budgeting.</p>
+          <div class="mt-6 flex gap-3">
+            <button onclick="switchScreen('screen-4')" class="bg-brand-600 hover:bg-brand-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2 shadow-lg transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> Plan a trip
+            </button>
+            <button onclick="switchScreen('screen-6')" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition">
+              View My Trips
+            </button>
+          </div>
+        </div>
+        <div class="absolute right-6 top-1/2 -translate-y-1/2 opacity-15 hidden lg:block">
+          <i data-lucide="plane-takeoff" class="w-72 h-72"></i>
+        </div>
+      </div>
+
+      <!-- Search & Filters Bar (As per wireframe) -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-[220px] relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-400"></i>
+          <input type="text" placeholder="Search destinations, activities, cities ......" class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+        </div>
+        <button class="flex items-center gap-2 px-4 py-2 border rounded-xl text-sm hover:bg-slate-50 font-medium text-slate-700">
+          <i data-lucide="layers" class="w-4 h-4"></i> Group by
+        </button>
+        <button class="flex items-center gap-2 px-4 py-2 border rounded-xl text-sm hover:bg-slate-50 font-medium text-slate-700">
+          <i data-lucide="filter" class="w-4 h-4"></i> Filter
+        </button>
+        <button class="flex items-center gap-2 px-4 py-2 border rounded-xl text-sm hover:bg-slate-50 font-medium text-slate-700">
+          <i data-lucide="arrow-up-down" class="w-4 h-4"></i> Sort by...
+        </button>
+      </div>
+
+      <!-- Top Regional Selections -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold text-slate-900">Top Regional Selections</h2>
+          <div class="h-0.5 flex-1 bg-slate-200 ml-4"></div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div onclick="switchScreen('screen-8')" class="bg-white p-3 rounded-2xl border border-slate-200 hover:shadow-lg transition cursor-pointer group">
+            <div class="h-28 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition">
+              <i data-lucide="mountain" class="w-8 h-8"></i>
+            </div>
+            <p class="font-semibold text-sm mt-2 text-slate-800">Himachal Trek</p>
+            <p class="text-xs text-slate-500">North India</p>
+          </div>
+          <div onclick="switchScreen('screen-8')" class="bg-white p-3 rounded-2xl border border-slate-200 hover:shadow-lg transition cursor-pointer group">
+            <div class="h-28 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition">
+              <i data-lucide="palmtree" class="w-8 h-8"></i>
+            </div>
+            <p class="font-semibold text-sm mt-2 text-slate-800">Goa Beaches</p>
+            <p class="text-xs text-slate-500">West Coast</p>
+          </div>
+          <div onclick="switchScreen('screen-8')" class="bg-white p-3 rounded-2xl border border-slate-200 hover:shadow-lg transition cursor-pointer group">
+            <div class="h-28 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition">
+              <i data-lucide="castle" class="w-8 h-8"></i>
+            </div>
+            <p class="font-semibold text-sm mt-2 text-slate-800">Jaipur Heritage</p>
+            <p class="text-xs text-slate-500">Rajasthan</p>
+          </div>
+          <div onclick="switchScreen('screen-8')" class="bg-white p-3 rounded-2xl border border-slate-200 hover:shadow-lg transition cursor-pointer group">
+            <div class="h-28 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition">
+              <i data-lucide="waves" class="w-8 h-8"></i>
+            </div>
+            <p class="font-semibold text-sm mt-2 text-slate-800">Kerala Backwaters</p>
+            <p class="text-xs text-slate-500">South India</p>
+          </div>
+          <div onclick="switchScreen('screen-8')" class="bg-white p-3 rounded-2xl border border-slate-200 hover:shadow-lg transition cursor-pointer group">
+            <div class="h-28 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-brand-50 group-hover:text-brand-600 transition">
+              <i data-lucide="sun" class="w-8 h-8"></i>
+            </div>
+            <p class="font-semibold text-sm mt-2 text-slate-800">Rann of Kutch</p>
+            <p class="text-xs text-slate-500">Gujarat</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Previous Trips -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold text-slate-900">Previous Trips</h2>
+          <div class="h-0.5 flex-1 bg-slate-200 ml-4"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div onclick="switchScreen('screen-9')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:shadow-md transition cursor-pointer">
+            <div class="h-32 bg-slate-100 rounded-xl mb-3 flex items-center justify-center text-slate-400">
+              <i data-lucide="map-pin" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-800">Manali Winter Escape</h3>
+            <p class="text-xs text-slate-500 mt-1">Dec 12 - Dec 18 • ₹24,500</p>
+            <span class="inline-block mt-3 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full font-semibold">Completed</span>
+          </div>
+          <div onclick="switchScreen('screen-9')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:shadow-md transition cursor-pointer">
+            <div class="h-32 bg-slate-100 rounded-xl mb-3 flex items-center justify-center text-slate-400">
+              <i data-lucide="compass" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-800">Udaipur Royal Tour</h3>
+            <p class="text-xs text-slate-500 mt-1">Oct 05 - Oct 09 • ₹18,200</p>
+            <span class="inline-block mt-3 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full font-semibold">Completed</span>
+          </div>
+          <div onclick="switchScreen('screen-9')" class="bg-white p-4 rounded-2xl border border-slate-200 hover:shadow-md transition cursor-pointer">
+            <div class="h-32 bg-slate-100 rounded-xl mb-3 flex items-center justify-center text-slate-400">
+              <i data-lucide="camera" class="w-8 h-8"></i>
+            </div>
+            <h3 class="font-bold text-slate-800">Varanasi Cultural Trip</h3>
+            <p class="text-xs text-slate-500 mt-1">Aug 14 - Aug 17 • ₹12,000</p>
+            <span class="inline-block mt-3 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full font-semibold">Completed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 4: CREATE A NEW TRIP ================= -->
+    <section id="screen-4" class="screen-view hidden p-6 max-w-4xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 4</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Plan a new trip</h2>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Select a Place :</label>
+            <select class="w-full px-3.5 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+              <option>Bir Billing, Himachal</option>
+              <option>Rishikesh, Uttarakhand</option>
+              <option>Munnar, Kerala</option>
+              <option>Leh Ladakh, J&K</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Start Date :</label>
+            <input type="date" class="w-full px-3.5 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none" value="2026-09-10" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">End Date :</label>
+            <input type="date" class="w-full px-3.5 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none" value="2026-09-15" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestions Section -->
+      <div>
+        <h3 class="font-bold text-slate-800 text-lg mb-3">Suggestion for Places to Visit / Activities to perform</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 hover:border-brand-500 cursor-pointer shadow-sm">
+            <div class="h-24 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-2">
+              <i data-lucide="wind" class="w-7 h-7"></i>
+            </div>
+            <h4 class="font-bold text-sm">Tandem Paragliding</h4>
+            <p class="text-xs text-slate-500">₹3,000 / person</p>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 hover:border-brand-500 cursor-pointer shadow-sm">
+            <div class="h-24 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-2">
+              <i data-lucide="tent" class="w-7 h-7"></i>
+            </div>
+            <h4 class="font-bold text-sm">Camp Oak View</h4>
+            <p class="text-xs text-slate-500">₹1,800 / night</p>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 hover:border-brand-500 cursor-pointer shadow-sm">
+            <div class="h-24 bg-brand-50 rounded-lg flex items-center justify-center text-brand-600 mb-2">
+              <i data-lucide="coffee" class="w-7 h-7"></i>
+            </div>
+            <h4 class="font-bold text-sm">Café Hopping & Monasteries</h4>
+            <p class="text-xs text-slate-500">Free exploration</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-4">
+        <button onclick="alert('Added another itinerary section!')" class="px-5 py-2.5 border-2 border-dashed border-brand-500 text-brand-600 rounded-xl font-semibold text-sm hover:bg-brand-50 flex items-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i> Add another Section
+        </button>
+        <button onclick="switchScreen('screen-5')" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold text-sm shadow-md">
+          Next: Build Itinerary &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 5: BUILD ITINERARY SCREEN ================= -->
+    <section id="screen-5" class="screen-view hidden p-6 max-w-4xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 5</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Build Itinerary Screen</h2>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-900 text-lg">Section 1 : Travel & Arrival</h3>
+          <span class="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-medium">Step 1</span>
+        </div>
+        <textarea rows="2" class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="All the necessary information about this section. This can be anything like travel section, hotel or any other activity">Overnight Volvo bus from Delhi to Bir. Check-in at Zostel Bir and local briefing.</textarea>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Date Range :</label>
+            <input type="text" value="10 Sep 2026 to 11 Sep 2026" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Budget of this section :</label>
+            <input type="text" value="₹ 4,500" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-900 text-lg">Section 2 : Adventure Sports</h3>
+          <span class="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-medium">Step 2</span>
+        </div>
+        <textarea rows="2" class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="All the necessary information about this section...">Drive to Billing take-off site for morning tandem paragliding + GoPro recording.</textarea>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Date Range :</label>
+            <input type="text" value="12 Sep 2026 to 13 Sep 2026" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Budget of this section :</label>
+            <input type="text" value="₹ 6,000" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-900 text-lg">Section 3 : Sightseeing & Departure</h3>
+          <span class="text-xs bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-medium">Step 3</span>
+        </div>
+        <textarea rows="2" class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="All the necessary information about this section...">Visit Chokling Monastery, cafe hopping, and evening return transit.</textarea>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Date Range :</label>
+            <input type="text" value="14 Sep 2026 to 15 Sep 2026" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Budget of this section :</label>
+            <input type="text" value="₹ 3,500" class="w-full px-3 py-2 border rounded-lg text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button onclick="switchScreen('screen-6')" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold text-sm shadow-md">
+          Save & View Trips List &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 6: USER TRIP LISTING ================= -->
+    <section id="screen-6" class="screen-view hidden p-6 max-w-5xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 6</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">User Trip Listing</h2>
+      </div>
+
+      <!-- Controls -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-[200px] relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-400"></i>
+          <input type="text" placeholder="Search bar ......" class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm" />
+        </div>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Group by</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Filter</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Sort by...</button>
+      </div>
+
+      <!-- Ongoing -->
+      <div class="space-y-2">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Ongoing
+        </h3>
+        <div onclick="switchScreen('screen-9')" class="bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md cursor-pointer flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-800">Short Overview of the Trip - Kerala Backwaters Explorer</h4>
+            <p class="text-xs text-slate-500 mt-1">Cochin • Alleppey • Munnar | 5 Days Active</p>
+          </div>
+          <span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold">Active</span>
+        </div>
+      </div>
+
+      <!-- Up-coming -->
+      <div class="space-y-2">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Up-coming
+        </h3>
+        <div onclick="switchScreen('screen-9')" class="bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md cursor-pointer flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-slate-800">Short Overview of the Trip - Bir Billing Adventure</h4>
+            <p class="text-xs text-slate-500 mt-1">Sep 10 - Sep 15, 2026 • 3 Sections Configured</p>
+          </div>
+          <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-semibold">Scheduled</span>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div class="space-y-2">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Completed
+        </h3>
+        <div onclick="switchScreen('screen-9')" class="bg-white p-5 rounded-2xl border border-slate-200 hover:shadow-md cursor-pointer flex justify-between items-center mb-2">
+          <div>
+            <h4 class="font-bold text-slate-800">Short Overview of the Trip - Rajasthan Heritage Circuit</h4>
+            <p class="text-xs text-slate-500 mt-1">Jaipur • Jodhpur • Jaisalmer | Completed Jan 2026</p>
+          </div>
+          <span class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold">Archived</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 7: USER PROFILE PAGES ================= -->
+    <section id="screen-7" class="screen-view hidden p-6 max-w-5xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 7</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">User Profile Pages</h2>
+      </div>
+
+      <!-- User Info Header Box -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-6">
+        <div class="w-28 h-28 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 flex-shrink-0">
+          <i data-lucide="user-check" class="w-10 h-10"></i>
+          <span class="text-xs font-semibold">User Image</span>
+        </div>
+        <div class="flex-1 text-center sm:text-left">
+          <h3 class="text-2xl font-bold text-slate-900">John Doe</h3>
+          <p class="text-sm text-slate-500">john.doe@example.com • +91 98765 43210 • Ahmedabad, India</p>
+          <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+            User Details with appropriate option to edit those information.... Frequent solo trekker & budget traveler.
+          </p>
+        </div>
+        <button class="px-4 py-2 border border-brand-500 text-brand-600 font-semibold rounded-lg text-xs hover:bg-brand-50">
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Preplanned Trips -->
+      <div>
+        <h3 class="font-bold text-slate-900 text-lg mb-3">Preplanned Trips</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="h-28 bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-slate-400">
+                <i data-lucide="map" class="w-7 h-7"></i>
+              </div>
+              <h4 class="font-bold text-sm">Leh Ladakh Solo</h4>
+            </div>
+            <button onclick="switchScreen('screen-9')" class="w-full mt-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-lg text-xs font-semibold">View</button>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="h-28 bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-slate-400">
+                <i data-lucide="map" class="w-7 h-7"></i>
+              </div>
+              <h4 class="font-bold text-sm">Spiti Valley Loop</h4>
+            </div>
+            <button onclick="switchScreen('screen-9')" class="w-full mt-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-lg text-xs font-semibold">View</button>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="h-28 bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-slate-400">
+                <i data-lucide="map" class="w-7 h-7"></i>
+              </div>
+              <h4 class="font-bold text-sm">Coorg Weekend</h4>
+            </div>
+            <button onclick="switchScreen('screen-9')" class="w-full mt-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-lg text-xs font-semibold">View</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Previous Trips -->
+      <div>
+        <h3 class="font-bold text-slate-900 text-lg mb-3">Previous Trips</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="h-28 bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-slate-400">
+                <i data-lucide="check-circle" class="w-7 h-7"></i>
+              </div>
+              <h4 class="font-bold text-sm">Rishikesh Rafting</h4>
+            </div>
+            <button onclick="switchScreen('screen-9')" class="w-full mt-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">View</button>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="h-28 bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-slate-400">
+                <i data-lucide="check-circle" class="w-7 h-7"></i>
+              </div>
+              <h4 class="font-bold text-sm">Darjeeling Tea Estate</h4>
+            </div>
+            <button onclick="switchScreen('screen-9')" class="w-full mt-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">View</button>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="h-28 bg-slate-100 rounded-lg mb-2 flex items-center justify-center text-slate-400">
+                <i data-lucide="check-circle" class="w-7 h-7"></i>
+              </div>
+              <h4 class="font-bold text-sm">Pondicherry French Qtr</h4>
+            </div>
+            <button onclick="switchScreen('screen-9')" class="w-full mt-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">View</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 8: ACTIVITY & CITY SEARCH ================= -->
+    <section id="screen-8" class="screen-view hidden p-6 max-w-5xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 8</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Activity Search Pages / City Search Page</h2>
+      </div>
+
+      <!-- Controls with Paragliding Search Example -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-[200px] relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-400"></i>
+          <input type="text" value="Paragliding " class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm font-semibold text-slate-800" />
+        </div>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Group by</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Filter</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Sort by...</button>
+      </div>
+
+      <h3 class="font-bold text-slate-800 text-xl">Results</h3>
+      <div class="space-y-3">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-slate-900">High Fly Tandem Paragliding (Billing to Bir)</h4>
+            <p class="text-xs text-slate-500">Duration: 25-30 mins • High safety rating • Pilot certified</p>
+          </div>
+          <span class="font-bold text-brand-600">₹ 3,200</span>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-slate-900">Sunset Paragliding Experience with 4K Video</h4>
+            <p class="text-xs text-slate-500">Duration: 20 mins • Sunset launch window • Action cam included</p>
+          </div>
+          <span class="font-bold text-brand-600">₹ 3,800</span>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-slate-900">Bir Acro-Tandem Flight & Thermalling</h4>
+            <p class="text-xs text-slate-500">Duration: 45 mins • Advanced altitude gain</p>
+          </div>
+          <span class="font-bold text-brand-600">₹ 5,500</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 9: ITINERARY VIEW & BUDGET SECTION ================= -->
+    <section id="screen-9" class="screen-view hidden p-6 max-w-5xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 9</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Itinerary View Screen with Budget Section</h2>
+        <p class="text-sm text-slate-500">Itinerary for a selected place (Bir Billing 2-Day Adventure)</p>
+      </div>
+
+      <!-- DAY 1 FLOW -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="bg-brand-600 text-white font-bold text-sm px-3.5 py-1 rounded-lg">Day 1</span>
+          <h3 class="text-lg font-bold text-slate-800">Physical Activity & Expense Breakdown</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Flowchart Activity Nodes (2 cols) -->
+          <div class="md:col-span-2 space-y-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Physical Activity Flow</h4>
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium text-sm flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-600 text-xs flex items-center justify-center font-bold">1</span>
+              <span>Arrive at Bir Landing Site & Check into Hostel</span>
+            </div>
+            <div class="flex justify-center text-slate-400"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium text-sm flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-600 text-xs flex items-center justify-center font-bold">2</span>
+              <span>Hike to Bangoru Waterfall & Forest Trail</span>
+            </div>
+            <div class="flex justify-center text-slate-400"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium text-sm flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-600 text-xs flex items-center justify-center font-bold">3</span>
+              <span>Sunset Cafe & Chokling Monastery Tour</span>
+            </div>
+          </div>
+
+          <!-- Expense Breakdown (1 col) -->
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Expense</h4>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+              <p class="text-xs text-indigo-600 font-semibold">Stay & Meals</p>
+              <p class="text-xl font-black text-indigo-900">₹ 1,800</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+              <p class="text-xs text-indigo-600 font-semibold">Local Guide / Entry</p>
+              <p class="text-xl font-black text-indigo-900">₹ 400</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+              <p class="text-xs text-indigo-600 font-semibold">Dinner & Cafes</p>
+              <p class="text-xl font-black text-indigo-900">₹ 950</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 FLOW -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="bg-brand-600 text-white font-bold text-sm px-3.5 py-1 rounded-lg">Day 2</span>
+          <h3 class="text-lg font-bold text-slate-800">Physical Activity & Expense Breakdown</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Physical Activity Flow</h4>
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium text-sm flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-600 text-xs flex items-center justify-center font-bold">1</span>
+              <span>4x4 Jeep Ride up to Billing Ridge (2,400m)</span>
+            </div>
+            <div class="flex justify-center text-slate-400"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium text-sm flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-600 text-xs flex items-center justify-center font-bold">2</span>
+              <span>Tandem Paragliding Launch & Landing in Bir</span>
+            </div>
+            <div class="flex justify-center text-slate-400"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-medium text-sm flex items-center gap-3">
+              <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-600 text-xs flex items-center justify-center font-bold">3</span>
+              <span>Souvenir Shopping & Night Bus Boarding</span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Expense</h4>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+              <p class="text-xs text-indigo-600 font-semibold">Transit to Billing</p>
+              <p class="text-xl font-black text-indigo-900">₹ 600</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+              <p class="text-xs text-indigo-600 font-semibold">Paragliding + Video</p>
+              <p class="text-xl font-black text-indigo-900">₹ 3,500</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+              <p class="text-xs text-indigo-600 font-semibold">Return Volvo</p>
+              <p class="text-xl font-black text-indigo-900">₹ 1,500</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 10: COMMUNITY TAB ================= -->
+    <section id="screen-10" class="screen-view hidden p-6 max-w-4xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 10</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Community Tab Screen</h2>
+        <p class="text-xs text-slate-500">Community section where all users can share their experiences about a certain trip or activity</p>
+      </div>
+
+      <!-- Controls -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-[200px] relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-400"></i>
+          <input type="text" placeholder="Search community posts ......" class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm" />
+        </div>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Group by</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Filter</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Sort by...</button>
+      </div>
+
+      <!-- Community Feed -->
+      <div class="space-y-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
+          <div class="w-12 h-12 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold flex-shrink-0">
+            AM
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between">
+              <h4 class="font-bold text-slate-800">Aarav Mehta <span class="text-xs font-normal text-slate-400">• 2h ago</span></h4>
+              <span class="text-xs bg-brand-50 text-brand-600 px-2 py-0.5 rounded font-semibold">Bir Billing</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2">
+              Just completed the tandem flight at Billing! Make sure to take the morning 8:30 AM slot for the calmest thermals and crystal clear views of the Dhauladhar range. Total cost came around ₹3,200 with media.
+            </p>
+            <div class="flex gap-4 mt-3 text-xs text-slate-500 font-semibold">
+              <button class="hover:text-brand-600 flex items-center gap-1"><i data-lucide="thumbs-up" class="w-4 h-4"></i> 24 Likes</button>
+              <button class="hover:text-brand-600 flex items-center gap-1"><i data-lucide="message-square" class="w-4 h-4"></i> 5 Comments</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
+          <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold flex-shrink-0">
+            PS
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between">
+              <h4 class="font-bold text-slate-800">Priya Sharma <span class="text-xs font-normal text-slate-400">• 1d ago</span></h4>
+              <span class="text-xs bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded font-semibold">Kerala</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2">
+              Rent a kayak in Alleppey instead of the big houseboats if you want to explore the narrow canals where real village life happens!
+            </p>
+            <div class="flex gap-4 mt-3 text-xs text-slate-500 font-semibold">
+              <button class="hover:text-brand-600 flex items-center gap-1"><i data-lucide="thumbs-up" class="w-4 h-4"></i> 42 Likes</button>
+              <button class="hover:text-brand-600 flex items-center gap-1"><i data-lucide="message-square" class="w-4 h-4"></i> 11 Comments</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 11: CALENDAR VIEW ================= -->
+    <section id="screen-11" class="screen-view hidden p-6 max-w-5xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 11</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Calendar View Screen</h2>
+      </div>
+
+      <!-- Controls -->
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-[200px] relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-400"></i>
+          <input type="text" placeholder="Search calendar ......" class="w-full pl-10 pr-4 py-2 border rounded-xl text-sm" />
+        </div>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Group by</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Filter</button>
+        <button class="px-3 py-2 border rounded-xl text-xs font-medium text-slate-700">Sort by...</button>
+      </div>
+
+      <!-- Interactive Calendar Table -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-bold text-slate-800 text-lg">September 2026</h3>
+          <div class="flex gap-2">
+            <button class="p-2 border rounded-lg hover:bg-slate-50"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+            <button class="p-2 border rounded-lg hover:bg-slate-50"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-slate-500 mb-2">
+          <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-2">
+          <!-- Calendar Days Mock -->
+          <div class="h-20 p-1.5 border rounded-xl bg-slate-50 text-xs text-slate-400">30</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-slate-50 text-xs text-slate-400">31</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">1</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">2</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">3</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">4</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">5</div>
+
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">6</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">7</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">8</div>
+          <div class="h-20 p-1.5 border rounded-xl bg-white text-xs font-semibold">9</div>
+          <!-- Trip Block on Sep 10-12 -->
+          <div class="h-20 p-1.5 border-2 border-brand-500 rounded-xl bg-brand-50 text-xs font-bold text-brand-900">
+            10
+            <span class="block mt-1 text-[10px] bg-brand-600 text-white rounded px-1 py-0.5 truncate">Bir Trip Start</span>
+          </div>
+          <div class="h-20 p-1.5 border-2 border-brand-500 rounded-xl bg-brand-50 text-xs font-bold text-brand-900">
+            11
+            <span class="block mt-1 text-[10px] bg-brand-600 text-white rounded px-1 py-0.5 truncate">Paragliding</span>
+          </div>
+          <div class="h-20 p-1.5 border-2 border-brand-500 rounded-xl bg-brand-50 text-xs font-bold text-brand-900">
+            12
+            <span class="block mt-1 text-[10px] bg-brand-600 text-white rounded px-1 py-0.5 truncate">Return</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 12: ADMIN PANEL ================= -->
+    <section id="screen-12" class="screen-view hidden p-6 max-w-6xl mx-auto space-y-6">
+      <div class="border-b pb-4">
+        <span class="text-xs font-bold text-brand-600 uppercase tracking-wide">Screen 12</span>
+        <h2 class="text-3xl font-extrabold text-slate-900">Admin Panel Screen</h2>
+      </div>
+
+      <!-- Tabs as specified in wireframe -->
+      <div class="flex flex-wrap gap-2 border-b pb-3">
+        <button onclick="switchAdminTab('admin-users')" id="btn-admin-users" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs font-bold transition">Manage Users</button>
+        <button onclick="switchAdminTab('admin-cities')" id="btn-admin-cities" class="px-4 py-2 bg-white border text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition">Popular Cities</button>
+        <button onclick="switchAdminTab('admin-activities')" id="btn-admin-activities" class="px-4 py-2 bg-white border text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition">Popular Activities</button>
+        <button onclick="switchAdminTab('admin-analytics')" id="btn-admin-analytics" class="px-4 py-2 bg-white border text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition">User Trends & Analytics</button>
+      </div>
+
+      <!-- Tab Content 1: Manage Users -->
+      <div id="admin-users" class="admin-tab bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-bold text-slate-900 text-lg">Manage User Section</h3>
+        <p class="text-xs text-slate-500">Responsible for managing users, trips made, and permission controls.</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b">
+              <tr>
+                <th class="p-3">User</th>
+                <th class="p-3">Email</th>
+                <th class="p-3">Trips Created</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y text-slate-700">
+              <tr>
+                <td class="p-3 font-semibold">John Doe</td>
+                <td class="p-3 text-slate-500">john.doe@example.com</td>
+                <td class="p-3">6 trips</td>
+                <td class="p-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs rounded-full font-bold">Active</span></td>
+                <td class="p-3"><button class="text-xs text-brand-600 font-bold hover:underline">View Trips</button></td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Priya Sharma</td>
+                <td class="p-3 text-slate-500">priya@example.com</td>
+                <td class="p-3">12 trips</td>
+                <td class="p-3"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs rounded-full font-bold">Active</span></td>
+                <td class="p-3"><button class="text-xs text-brand-600 font-bold hover:underline">View Trips</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Popular Cities -->
+      <div id="admin-cities" class="admin-tab hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-bold text-slate-900 text-lg">Popular Cities</h3>
+        <p class="text-xs text-slate-500">Lists all popular destinations based on user trends.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 border rounded-xl bg-slate-50"><p class="text-xs text-slate-400">#1 Destination</p><h4 class="font-bold text-lg">Manali, HP</h4><p class="text-xs text-brand-600 font-semibold mt-1">1,420 Active Itineraries</p></div>
+          <div class="p-4 border rounded-xl bg-slate-50"><p class="text-xs text-slate-400">#2 Destination</p><h4 class="font-bold text-lg">Goa</h4><p class="text-xs text-brand-600 font-semibold mt-1">1,180 Active Itineraries</p></div>
+          <div class="p-4 border rounded-xl bg-slate-50"><p class="text-xs text-slate-400">#3 Destination</p><h4 class="font-bold text-lg">Jaipur, RJ</h4><p class="text-xs text-brand-600 font-semibold mt-1">940 Active Itineraries</p></div>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Popular Activities -->
+      <div id="admin-activities" class="admin-tab hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-bold text-slate-900 text-lg">Popular Activities</h3>
+        <p class="text-xs text-slate-500">List of popular activities selected across itineraries.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 border rounded-xl bg-slate-50"><h4 class="font-bold">Tandem Paragliding</h4><p class="text-xs text-slate-500">3,400 Bookings</p></div>
+          <div class="p-4 border rounded-xl bg-slate-50"><h4 class="font-bold">River Rafting</h4><p class="text-xs text-slate-500">2,850 Bookings</p></div>
+          <div class="p-4 border rounded-xl bg-slate-50"><h4 class="font-bold">Desert Safari</h4><p class="text-xs text-slate-500">1,920 Bookings</p></div>
+        </div>
+      </div>
+
+      <!-- Tab Content 4: User Trends & Analytics -->
+      <div id="admin-analytics" class="admin-tab hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-bold text-slate-900 text-lg">User Trends & Analytics</h3>
+        <p class="text-xs text-slate-500">Provides analysis across various metrics for business insights.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div class="p-4 bg-brand-50 rounded-xl border border-brand-100"><p class="text-xs font-semibold text-brand-600">Total Users</p><p class="text-2xl font-black text-brand-900">8,420</p></div>
+          <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100"><p class="text-xs font-semibold text-emerald-600">Trips Planned</p><p class="text-2xl font-black text-emerald-900">14,280</p></div>
+          <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100"><p class="text-xs font-semibold text-indigo-600">Avg Trip Budget</p><p class="text-2xl font-black text-indigo-900">₹ 22,400</p></div>
+          <div class="p-4 bg-amber-50 rounded-xl border border-amber-100"><p class="text-xs font-semibold text-amber-600">Active Communities</p><p class="text-2xl font-black text-amber-900">340</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Screen Switching Logic
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen-view').forEach(screen => {
+        screen.classList.add('hidden');
+      });
+      const activeScreen = document.getElementById(screenId);
+      if (activeScreen) {
+        activeScreen.classList.remove('hidden');
+      }
+
+      // Hide/Show main navbar for login/register
+      const navbar = document.getElementById('app-navbar');
+      if (screenId === 'screen-1' || screenId === 'screen-2') {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Admin Tabs Logic
+    function switchAdminTab(tabId) {
+      document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.add('hidden'));
+      const activeTab = document.getElementById(tabId);
+      if (activeTab) activeTab.classList.remove('hidden');
+
+      const buttons = [
+        { id: 'btn-admin-users', target: 'admin-users' },
+        { id: 'btn-admin-cities', target: 'admin-cities' },
+        { id: 'btn-admin-activities', target: 'admin-activities' },
+        { id: 'btn-admin-analytics', target: 'admin-analytics' }
+      ];
+
+      buttons.forEach(b => {
+        const btnElem = document.getElementById(b.id);
+        if (b.target === tabId) {
+          btnElem.className = "px-4 py-2 bg-brand-600 text-white rounded-xl text-xs font-bold transition";
+        } else {
+          btnElem.className = "px-4 py-2 bg-white border text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition";
+        }
+      });
+    }
+
+    // Start on Screen 3 (Main Landing Page) by default
+    switchScreen('screen-3');
+  </script>
+</body>
+</html>
